@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>3Dmol.js Viewer</title>
+        <script src="http://3dmol.csb.pitt.edu/build/3Dmol.js"></script>
+        <script src="surface.js"></script>
+        <style>
+        </style>
+    <script>
+    $(document).ready(function() {
+                  
+          viewer = $3Dmol.createViewer("gldiv");                    
+          viewer.setBackgroundColor(0xffffff);          
+    });
+    
+    function makeMesh(pdb) {
+    	var url = "http://www.pdb.org/pdb/files/"+pdb+".pdb";
+    	$.get(url).done(function(ret) {
+    		viewer.clear();
+    		var m = viewer.addModel(ret, "pdb");
+    		viewer.zoomTo();
+    		var mesh = generateMesh(m.selectedAtoms({}));
+    		viewer.addMesh(mesh);
+    		viewer.render();
+    		
+    	});
+    }
+    
+    makeMesh('4R15');
+    </script>
+    </head>    
+    <body>
+        <h1>Molecular Surface Optimization Project</h1>
+        Molecular visualization is an essential tool in biology and chemistry.
+        <a href="http://3dmol.csb.pitt.edu">3Dmol</a> is a JavaScript library for molecular visualization
+        that uses <a href="https://www.khronos.org/webgl/">WebGL</a> to provide hardware accelerated 3D graphics. 
+        <p>
+        In this project you will optimize molecular surface generation code.
+        This code takes a list of atoms and computes the solvent excluded surface using the 
+        <a href="http://zhanglab.ccmb.med.umich.edu/EDTSurf/">EDTSurf</a> algorithm.
+        
+        <h2>Option 1: Web-Client Optimization
+        </h2>
+        <h2>Option 2: Service-Side Optimization</h2>
+         <div>
+         <input type="button" value="Small" onclick="makeMesh('4R15')"></input>       
+         <input type="button" value="Medium" onclick="makeMesh('1YCR')"></input>       
+         <input type="button" value="Large" onclick="makeMesh('3PXY')"></input>       
+         <input type="button" value="X-Large" onclick="makeMesh('1UVJ')"></input>       
+         <span id='timeresult'></span>
+         </div>
+         <div id='gldiv' style="border: 1px solid black; position: relative; width: 1000px; height: 800px;"></div>
+    </body>    
+</html>
