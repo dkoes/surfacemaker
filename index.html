@@ -5,6 +5,10 @@
         <script src="http://3dmol.csb.pitt.edu/build/3Dmol.js"></script>
         <script src="surface.js"></script>
         <style>
+        html {
+          
+  font-size: 20px;
+        }
         </style>
     <script>
     $(document).ready(function() {
@@ -29,19 +33,45 @@
     makeMesh('4R15');
     </script>
     </head>    
-    <body>
+    <body style="width: 1000px; margin: auto">
         <h1>Molecular Surface Optimization Project</h1>
+                <img style = "float:right; width: 300px" src="http://jmol.sourceforge.net/docs/surface/sas_and_ses.gif">
+        
         Molecular visualization is an essential tool in biology and chemistry.
         <a href="http://3dmol.csb.pitt.edu">3Dmol</a> is a JavaScript library for molecular visualization
         that uses <a href="https://www.khronos.org/webgl/">WebGL</a> to provide hardware accelerated 3D graphics. 
         <p>
         In this project you will optimize molecular surface generation code.
-        This code takes a list of atoms and computes the solvent excluded surface using the 
-        <a href="http://zhanglab.ccmb.med.umich.edu/EDTSurf/">EDTSurf</a> algorithm.
+        The code takes a list of atoms and computes a 3D mesh representing the 
+        <a href="http://jmol.sourceforge.net/docs/surface/">solvent excluded surface</a> using the 
+        <a href="http://zhanglab.ccmb.med.umich.edu/EDTSurf/">EDTSurf</a> algorithm.  
         
+        <p>A reference JavaScript implementation is provided on this page and is available <A href="https://github.com/dkoes/surfacemaker">through github</A>.
+        Note that the X-Large example below does not work since WebGL buffers are limited to 65,536 elements.
+          For the purposes of the project, you do not need to support meshes larger than 64k, however if you are splitting up the mesh to parallelize it, it should be
+        straightfoward to get larger meshes working.
+        
+        <p>You have two options in tackling this project.
         <h2>Option 1: Web-Client Optimization
         </h2>
+        <p>In this option the surface generation code runs exclusively on the client using JavaScript and standard APIs.
+        You may choose to optimize for any widely available browser.  For example, you might use asm.js and target Firefox.
+        You may not rely on plugins, Java, or Flash because these are evil incarnate.  The exception is that you may use 
+        WebCL (since it is a standard, albeit a poorly supported one) even if this means using the 
+        <a href="http://webcl.nokiaresearch.com/">Nokia plugin</a> or 
+        <a href="https://github.com/amd/Chromium-WebCL">Chromium-WebCL</a>.
+        
         <h2>Option 2: Service-Side Optimization</h2>
+        <p>In this option you may implement the surface generation code in any language and run it on a server.
+         You are strongly encouraged to use CUDA, and access to workstation(s) with nVidia GTX 980 graphics cards 
+         can be provided if needed.  The EDTSurf code will serve as the reference implementation in this case.
+         
+         <h2>Deliverables</h2>
+         <ul>
+         <li>Demonstrate a performance improvement over the reference implementation.
+         <li>If you change the algorithm to produce a more approximate mesh, you must quantify the mesh error with the reference result.
+         <li>Your code need only work for meshes of size 64k or less (but it would be nice if it worked for all mesh sizes).
+         </ul>
          <div>
          <input type="button" value="Small" onclick="makeMesh('4R15')"></input>       
          <input type="button" value="Medium" onclick="makeMesh('1YCR')"></input>       
